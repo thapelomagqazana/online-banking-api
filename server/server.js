@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const morgan = require("morgan");
 const authRoutes = require("./routes/auth");
 const accountRoutes = require("./routes/account");
+const transactionRoutes = require("./routes/transaction");
 const config = require("./config/config");
 const cors = require("cors");
 
@@ -18,6 +19,7 @@ app.use(cors());
 // Routes
 app.use("/auth", authRoutes);
 app.use("/account", accountRoutes);
+app.use("/transaction", transactionRoutes);
 
 // Connect to MongoDB
 mongoose.connect(config.database, { useNewUrlParser: true, useUnifiedTopology: true });

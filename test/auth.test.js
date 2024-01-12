@@ -8,15 +8,19 @@ describe('Authentication API', () => {
     await User.deleteMany({});
   });
 
-  describe('POST /auth/register', () => {
-    // it('should register a new user', async () => {
-    //   const res = await request(app)
-    //     .post('/auth/register')
-    //     .send({ username: 'testuser', password: 'testpassword' });
+  // afterEach(async () => {
+  //   app.close();
+  // });
 
-    //   expect(res.status).toBe(201);
-    //   expect(res.body.message).toBe('User registered successfully');
-    // });
+  describe('POST /auth/register', () => {
+    it('should register a new user', async () => {
+      const res = await request(app)
+        .post('/auth/register')
+        .send({ username: 'testuser', password: 'testpassword' });
+
+      expect(res.status).toBe(201);
+      expect(res.body.message).toBe('User registered successfully');
+    });
 
     it('should return an error if the username already exists', async () => {
       // Register a user first

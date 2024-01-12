@@ -4,6 +4,12 @@ const jwt = require("jsonwebtoken");
 const { validationResult } = require("express-validator");
 const config = require("../config/config");
 
+/**
+ * Register a new user.
+ * @param {object} req - Express request object.
+ * @param {object} res - Express response object.
+ * @returns {object} JSON response indicating success or an error message.
+ */
 const register = async (req, res) => {
     try 
     {
@@ -42,7 +48,12 @@ const register = async (req, res) => {
     }
 };
 
-
+/**
+ * Authenticate a user and generate a JWT token upon successful login.
+ * @param {object} req - Express request object.
+ * @param {object} res - Express response object.
+ * @returns {object} JSON response with the JWT token or an error message.
+ */
 const login = async (req, res) => {
     try
     {

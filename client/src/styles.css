@@ -1,0 +1,124 @@
+.landing-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f0f0f0; /* Light, futuristic background */
+    font-family: sans-serif;
+  }
+  
+  .landing-page header {
+    margin-bottom: 40px;
+    text-align: center;
+  }
+  
+ .landing-page h1 {
+    font-size: 4rem;
+    color: #2196f3; /* Vibrant blue accent color */
+  }
+  
+  .landing-page p {
+    font-size: 1.2rem;
+    color: #757575; /* Softer gray for additional text */
+  }
+  
+ .landing-page main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+ .landing-page section {
+    margin-bottom: 30px;
+  }
+  
+  .login-button,
+  .register-button {
+    background-color: #2196f3; /* Vibrant blue for buttons */
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  .login-button:hover,
+  .register-button:hover {
+    background-color: #1976d2; /* Slightly darker blue on hover */
+  }
+
+  .auth-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+    font-family: sans-serif;
+  }
+  
+ .auth-page header {
+    margin-bottom: 40px;
+  }
+  
+ .auth-page h1 {
+    font-size: 3rem;
+    color: #2196f3;
+  }
+  
+  .auth-main {
+    width: 350px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+ .auth-main form {
+    margin-bottom: 20px;
+  }
+  
+ .auth-main label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+ .auth-main input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    margin-bottom: 10px;
+  }
+  
+ .auth-main button{
+    background-color: #2196f3;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+  }
+
+  .auth-main a {
+    text-decoration: none;
+    color: #2196f3;
+  }
+  
+ .auth-main button:hover {
+    background-color: #1976d2;
+  }
+
+  .auth-main a:hover{
+    color: #1976d2;
+  }
+  
+ .auth-main p {
+    margin-top: 10px;
+  }
+  
+  

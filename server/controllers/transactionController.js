@@ -21,4 +21,32 @@ const viewTransactionHistory = async (req, res) => {
     }
 };
 
-module.exports = { viewTransactionHistory };
+const transferFunds = async (req, res) => {
+    try
+    {
+        const { senderAccountId, receiverAccountId, amount } = req.body;
+
+        const senderTransaction = new Transaction({
+            accountId: senderAccountId,
+            amount: -amount,
+            description: "Funds Transfer to " + receiverAccountId,
+        });
+
+        const receiverTransaction = new Transaction({
+            accountId: receiverAccountId,
+            amount,
+            description: "Funds Transfers from " + senderAccountId,
+        });
+
+        await Promise.all([senderTransaction.save(), receiverTransaction.save()]);
+
+        res.status(200).json({ message: "Funds transferred successfully" });
+    }
+    catch (error)
+    {
+       console.error(error);
+       res.status(500).json({ message: "Internal server error" }); 
+    }
+};
+
+module.exports = { viewTransactionHistory, transferFunds };

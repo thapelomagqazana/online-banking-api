@@ -6,6 +6,11 @@ const transactionSchema = new mongoose.Schema({
         ref: 'User',
         required: true,
     },
+    type: {
+        type: String,
+        enum: ["debit", "credit"],
+        required: true,
+    },
     amount: {
         type: Number,
         required: true,

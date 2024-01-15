@@ -12,7 +12,6 @@ const RegisterPage = () => {
 
   const [passwordError, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  // const [registrationSuccess, setRegistrationSuccess] = useState(false);
 
   const handleChange = (e) => {
     setFormData({

@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 // import './AuthPage.css';
 
 const RegisterPage = () => {
-
+  const navigate = useNavigate(); // Initialize useNavigate hook
   const [formData, setFormData] = useState({
     username: '',
     password: '',
     confirmPassword: '',
   });
 
-  const [passwordError, setPasswordError] = useState("");
+  const [passwordError, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  // const [registrationSuccess, setRegistrationSuccess] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -20,7 +21,7 @@ const RegisterPage = () => {
     });
 
     // Reset password error when user is typing
-    setPasswordError();
+    setError();
   };
 
   const togglePasswordVisibility = () => {
@@ -33,7 +34,7 @@ const RegisterPage = () => {
     // Check if password match
     if (formData.password !== formData.confirmPassword)
     {
-      setPasswordError("Passwords do not match");
+      setError("Passwords do not match");
       return;
     }
 
@@ -41,14 +42,14 @@ const RegisterPage = () => {
     const strongPasswordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/;
     if (!strongPasswordRegex.test(formData.password))
     {
-      setPasswordError('Password must contain at least 8 characters, including one uppercase letter, one lowercase letter, and one number.');
+      setError('Password must contain at least 8 characters, including one uppercase letter, one lowercase letter, and one number.');
       return;
     }
 
     // Send registration data to the server
     try
     {
-      const response = await fetch("api/register", {
+      const response = await fetch("http://localhost:5000/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -62,16 +63,17 @@ const RegisterPage = () => {
       if (response.ok)
       {
         console.log("Registration successful!");
+        navigate("/login");
       }
       else
       {
         const errorData = await response.json();
-        console.error("Registration failed:", errorData.message);
+        setError("Registration failed: " + errorData.message);
       }
     }
     catch (error)
     {
-      console.error("Error during registration:", error.message);
+      setError("Error during registration: "+ error.message);
     }
   };
 
@@ -91,11 +93,11 @@ const RegisterPage = () => {
           <label htmlFor="confirmPassword">Confirm Password:</label>
           <input type={showPassword ? 'text' : 'password'} id="confirmPassword" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} required />
 
+          {passwordError && <p className="error-message">{passwordError}</p>}
+
           <button type="button" onClick={togglePasswordVisibility}>
             {showPassword ? "Hide" : "Show"}
           </button>
-
-          {passwordError && <p className="error-message">{passwordError}</p>}
 
           <button type="submit">Register</button>
         </form>

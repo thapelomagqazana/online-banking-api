@@ -87,7 +87,7 @@
   }
   
  .auth-main input {
-    width: 100%;
+    width: 95%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 3px;
@@ -119,6 +119,27 @@
   
  .auth-main p {
     margin-top: 10px;
+  }
+
+  /* Add space between the buttons and the error message */
+.auth-main button,
+.error-message {
+  margin-bottom: 10px;
+}
+
+/* Style the register button */
+.auth-main button[type="submit"] {
+  background-color: #4caf50; /* Green color for register button */
+  margin-left: 30px;
+}
+
+.auth-main button[type="submit"]:hover {
+  background-color: #45a049;
+}
+
+  .auth-main .error-message {
+    color: #ff0000; /* Red color for error messages */
+    margin-top: 5px;
   }
   
   

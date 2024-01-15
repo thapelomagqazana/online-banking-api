@@ -7,5 +7,6 @@ const router = express.Router();
 
 router.get("/profile", authMiddleware, accountController.viewProfile);
 router.put("/profile", authMiddleware, accountController.updateProfile);
+router.get("/balance", authMiddleware, accountController.getAccountBalance);
 
 module.exports = router;

@@ -31,12 +31,6 @@ const viewProfile = async (req, res) => {
  * @param {object} req - Express request object.
  * @param {object} res - Express response object.
  * @returns {object} JSON response indicating success or an error message.
-*/
-/**
- * Update the user profile based on the authenticated user's ID.
- * @param {object} req - Express request object.
- * @param {object} res - Express response object.
- * @returns {object} JSON response indicating success or an error message.
  */
 
 const updateProfile = async (req, res) => {
@@ -70,4 +64,24 @@ const updateProfile = async (req, res) => {
   }  
 };
 
-module.exports = { viewProfile, updateProfile };
+const getAccountBalance = async (req, res) => {
+  try
+  {
+    const user = await User.findById(req.userId);
+
+    if (!user)
+    {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({ balance: user.accountBalance });
+  }
+  catch (error)
+  {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+
+module.exports = { viewProfile, updateProfile, getAccountBalance };

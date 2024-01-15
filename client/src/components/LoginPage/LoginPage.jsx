@@ -69,7 +69,7 @@ const LoginPage = () => {
       <main className="auth-main">
         <form onSubmit={handleSubmit}>
           <label htmlFor="username">Username:</label>
-          <input type="text" id="username" name="username" required />
+          <input type="text" id="username" name="username" value={formData.username} onChange={handleChange} required />
 
           <label htmlFor="password">Password:</label>
           <input type={showPassword ? 'text' : 'password'} id="password" name="password" value={formData.password} onChange={handleChange} required />

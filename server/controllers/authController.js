@@ -19,13 +19,18 @@ const register = async (req, res) => {
             return res.status(400).json({ errors: errors.array() });
         }
 
-        const { username, password } = req.body;
+        const { username, email, password } = req.body;
 
-        // Check if user already exists
-        let existingUser = await User.findOne({ username });
-        if (existingUser)
-        {
-            return res.status(400).json({ message: "User already exists" });
+        // Check if user already exists by username
+        let existingUsername = await User.findOne({ username });
+        if (existingUsername) {
+            return res.status(400).json({ message: 'Username already exists' });
+        }
+
+        // Check if user already exists by email
+        let existingEmail = await User.findOne({ email });
+        if (existingEmail) {
+            return res.status(400).json({ message: 'Email already registered' });
         }
 
         // Hash the password
@@ -34,6 +39,7 @@ const register = async (req, res) => {
         // Create new user
         const newUser = new User({
             username,
+            email,
             password: hashedPassword,
         });
 
@@ -63,15 +69,22 @@ const login = async (req, res) => {
             return res.status(400).json({ errors: errors.array() });
         }
 
-        const { username, password } = req.body;
+        const { username, email, password } = req.body;
 
         // Check if user exists
         const user = await User.findOne({ username });
-        
+
         if (!user)
         {
-            return res.status(401).json({ message: "Invalid credentials" })
+            return res.status(401).json({ message: "Invalid credentials" });
         }
+
+        const existingEmail = await User.findOne({ email });
+        if (!existingEmail)
+        {
+            return res.status(401).json({ message: "Invalid credentials" });
+        }
+        
 
         // Check password
         const passwordMatch = await bcrypt.compare(password, user.password);

@@ -6,6 +6,7 @@ const LoginPage = () => {
   // const navigate = useNavigate(); // Initialize useNavigate hook
   const [formData, setFormData] = useState({
     username: '',
+    email: '',
     password: '',
   });
 
@@ -39,6 +40,7 @@ const LoginPage = () => {
         },
         body: JSON.stringify({
           username: formData.username,
+          email: formData.email,
           password: formData.password,
         }),
       });
@@ -70,6 +72,9 @@ const LoginPage = () => {
         <form onSubmit={handleSubmit}>
           <label htmlFor="username">Username:</label>
           <input type="text" id="username" name="username" value={formData.username} onChange={handleChange} required />
+
+          <label htmlFor="email">Email:</label>
+          <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required />
 
           <label htmlFor="password">Password:</label>
           <input type={showPassword ? 'text' : 'password'} id="password" name="password" value={formData.password} onChange={handleChange} required />

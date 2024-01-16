@@ -15,7 +15,7 @@ const viewProfile = async (req, res) => {
 
         if (!user)
         {
-            return res.status(404).json({ message: "User not found" });
+            return res.status(400).json({ message: "User not found" });
         }
         res.status(200).json({ user });
     }
@@ -42,7 +42,7 @@ const updateProfile = async (req, res) => {
 
     if (!user)
     {
-        return res.status(404).json({ message: "User not found" });
+        return res.status(400).json({ message: "User not found" });
     }
 
     user.username = username || user.username;
@@ -70,7 +70,7 @@ const getAccountBalance = async (req, res) => {
 
     if (!user)
     {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(400).json({ message: "User not found" });
     }
 
     res.status(200).json({ balance: user.accountBalance });

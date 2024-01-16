@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import Cookies from "js-cookie";
 
 const LoginPage = () => {
   const navigate = useNavigate(); // Initialize useNavigate hook
@@ -51,9 +52,8 @@ const LoginPage = () => {
         // Access the token when the promise is fulfilled
         dataPromise.then((data) => {
           const authToken = data.token;
-          console.log('Token:', authToken);
-          // save it in localStorage
-          localStorage.setItem("authToken", authToken);
+          // save it in Cookies
+          Cookies.set('authToken', authToken);
           
         });
         navigate("/dashboard");

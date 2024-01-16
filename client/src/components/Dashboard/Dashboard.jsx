@@ -1,19 +1,22 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import Cookies from "js-cookie";
+
 
 const Dashboard = () => {
     const [balance, setBalance] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         // Fetch user's account balance from the server
         const fetchBalance = async () => {
             try
-            {   const token = localStorage.getItem("authToken");
-                
+            {   
                 const response = await fetch("http://localhost:5000/account/balance", {
                     method: "GET",
                     headers: {
-                        'Authorization': `Bearer ${token}`,
+                        'Authorization': `Bearer ${Cookies.get('authToken') || ''}`,
                         'Content-Type': 'application/json',
                     },
                 });
@@ -23,6 +26,26 @@ const Dashboard = () => {
                     const balanceData = await response.json();
                     setBalance(balanceData.balance);
                 }
+                else if (response.status === 401) {
+                  // Remove token from cookies
+                  Cookies.remove('authToken');
+      
+                  // Notify the user about the token expiration (you can use a toast or other notification method)
+                  alert('Unauthorized access. Please log in again.');
+              
+                  // Redirect to the login page
+                  navigate('/login');
+                } 
+                else if (response.status === 403) {
+                    // Remove token from cookies
+                    Cookies.remove('authToken');
+        
+                    // Notify the user about the token expiration (you can use a toast or other notification method)
+                    alert('Session expired. Please log in again.');
+                
+                    // Redirect to the login page
+                    navigate('/login');
+                } 
                 else 
                 {
                     console.error('Failed to fetch account balance:', response.status);
@@ -41,6 +64,13 @@ const Dashboard = () => {
 
     }, []); // Empty dependency array to run the effect only once on component mount
 
+    const data = [
+      { name: 'January', spending: 200 },
+      { name: 'February', spending: 150 },
+      { name: 'March', spending: 300 },
+      { name: 'April', spending: 250 },
+    ];
+
     return (
       <div className="dashboard">
         {/* Account Balance Section */}
@@ -56,18 +86,12 @@ const Dashboard = () => {
         {/* Quick Links Section */}
         <div className="quick-links">
           <h2>Quick Links</h2>
-        
-          <Link to="/view-transactions"><button className="quick-link-button">View Transactions</button></Link>
-            
-{/* //             <li> */}
-{/* //               <Link to="/transfer-funds">Transfer Funds</Link>
-//             </li>
-//             <li>
-//               <Link to="/pay-bills">Pay Bills</Link>
-//             </li> */}
-          {/* <button className="quick-link-button">Transfer Money</button>
-          <button className="quick-link-button">Pay Bills</button> */}
-          {/* Add more quick links as needed */}
+
+          <div>
+            <Link to="/view-transactions"><button className="quick-link-button">View Transactions</button></Link>
+            <Link to="/transfer-funds"><button className="quick-link-button">Transfer Funds</button></Link>
+            <Link to="/pay-bill"><button className="quick-link-button">Pay Bill</button></Link>
+          </div>
         </div>
   
         {/* Notifications Section */}
@@ -86,46 +110,18 @@ const Dashboard = () => {
   
         {/* Data Visualization (Example: Bar Chart) */}
         <div className="bar-chart">
-          {/* Placeholder for data visualization component */}
-          {/* You can integrate a chart library or your custom visualization here */}
-        </div>
+        <h2 className="chart-title">Monthly Spending</h2>
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart data={data}>
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Bar dataKey="spending" fill="#8884d8" />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
       </div>
     );
-    // return (
-    //     <div className="dashboard">
-    //       <header>
-    //         <h1>Dashboard</h1>
-    //       </header>
-    //       <main>
-    //         <section>
-    //           <h2>Account Balance</h2>
-    //           {balance !== null ? (
-    //             <p>R {balance}</p>
-    //         ) : (
-    //             <p>Loading...</p>
-    //         )}
-    //         </section>
-    //         <section>
-    //           <h2>Quick Links</h2>
-    //           <ul>
-    //             <li>
-    //               <Link to="/transactions">View Transactions</Link>
-    //             </li>
-    //             <li>
-    //               <Link to="/transfer-funds">Transfer Funds</Link>
-    //             </li>
-    //             <li>
-    //               <Link to="/pay-bills">Pay Bills</Link>
-    //             </li>
-    //           </ul>
-    //         </section>
-    //         <section>
-    //           <h2>Notifications</h2>
-    //           <p>No new notifications</p>
-    //         </section>
-    //       </main>
-    //     </div>
-    //   );
 };
 
 export default Dashboard;

@@ -76,13 +76,13 @@ const login = async (req, res) => {
 
         if (!user)
         {
-            return res.status(401).json({ message: "Invalid credentials" });
+            return res.status(400).json({ message: "Invalid credentials" });
         }
 
         const existingEmail = await User.findOne({ email });
         if (!existingEmail)
         {
-            return res.status(401).json({ message: "Invalid credentials" });
+            return res.status(400).json({ message: "Invalid credentials" });
         }
         
 
@@ -91,7 +91,7 @@ const login = async (req, res) => {
         console.log(passwordMatch);
         if (!passwordMatch)
         {
-            return res.status(401).json({ message: "Invalid credentials" });
+            return res.status(400).json({ message: "Invalid credentials" });
         }
 
         // Generate JWT token

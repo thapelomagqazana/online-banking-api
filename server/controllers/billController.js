@@ -10,10 +10,10 @@ const payBills = async (req, res) => {
     // Deduct the bill amount from the user's account balance
     const user = await User.findById(req.userId);
 
-    if ( typeof billAmount !== "number" )
-    {
-        return res.status(400).json({ message: "Number does not exist" });
-    }
+    // if ( typeof billAmount !== "number" )
+    // {
+    //     return res.status(400).json({ message: "Number does not exist" });
+    // }
 
     if ( billAmount > user.accountBalance )
     {

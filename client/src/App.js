@@ -5,6 +5,8 @@ import LoginPage from './components/LoginPage/LoginPage';
 import RegisterPage from './components/RegisterPage/RegisterPage';
 import Dashboard from './components/Dashboard/Dashboard';
 import ViewTransactionsPage from './components/ViewTransactions/ViewTransactionsPage';
+import TransferFundsPage from './components/TransferFund/TransferFundsPage';
+import PayBillsPage from './components/Bills/PayBillsPage';
 
 import "./styles.css";
 
@@ -17,6 +19,8 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/view-transactions" element={<ViewTransactionsPage />} />
+        <Route path="/transfer-funds" element={<TransferFundsPage />} />
+        <Route path="/pay-bill" element={<PayBillsPage />} />
       </Routes>
     </Router>
   );

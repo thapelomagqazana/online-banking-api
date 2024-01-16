@@ -27,33 +27,40 @@ const transferFunds = async (req, res) => {
     // Create transaction records
     try
     {
-        const { amount, recipientUsername } = req.body;
-
-        const recipient = await User.findOne({ recipientUsername });
+        const { amount, username } = req.body;
+        const recipient = await User.findOne({ username });
 
         if (!recipient)
         {
             return res.status(400).json({ message: "Recipient does not exist" });
         }
 
-        const sender = await User.find( req.userId );
+        const sender = await User.findById(req.userId);
 
-        if ( typeof amount !== "number" )
-        {
-            return res.status(400).json({ message: "Number does not exist" });
-        }
+        // if ( typeof amount != "number" )
+        // {
+        //     return res.status(400).json({ message: "Number does not exist" });
+        // }
 
         if ( amount > sender.accountBalance )
         {
             return res.status(400).json({ message: "Sender's account balance is insufficient" });
         }
 
+        // Check if the recipient is the same as the sender
+        if (recipient.username === sender.username && recipient.email === sender.email)
+        {
+            return res.status(400).json({ message: "Cannot transfer funds to yourself" });
+        }
+
         // Update sender's account balance (subtracting the transferred amount)
-        sender.accountBalance -= amount;
+        sender.accountBalance = Number(sender.accountBalance) - Number(amount);
+        console.log(sender.accountBalance);
         await sender.save();
 
         // Update recipient's account balance (adding the transferred amount)
-        recipient.accountBalance += amount;
+        recipient.accountBalance = Number(recipient.accountBalance) + Number(amount);
+        console.log(recipient.accountBalance);
         await recipient.save();
 
         // Create transaction records
@@ -61,7 +68,7 @@ const transferFunds = async (req, res) => {
             userId: req.userId,
             type: "debit",
             amount,
-            description: `Transferred funds to ${recipientUsername}`,
+            description: `Transferred funds to ${username}`,
         });
         await senderTransaction.save();
 

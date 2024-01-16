@@ -227,12 +227,19 @@ h1, h2, h3 {
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  
+}
+
+.quick-links div {
+  display: flex;
+  justify-content: space-between;
 }
 
 .quick-links h2 {
   font-size: 1.8rem;
   margin-bottom: 15px;
   color: #333;
+  text-align: center;
 }
 
 .quick-link-button {
@@ -294,6 +301,10 @@ h1, h2, h3 {
 /* Data Visualization (Example: Bar Chart) */
 .bar-chart {
   margin-top: 20px;
+}
+
+.bar-chart h2 {
+  text-align: center;
 }
 
 /* Additional Styling for Data Visualization Can Be Added Here */

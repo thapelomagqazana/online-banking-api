@@ -4,6 +4,7 @@ import LandingPage from './components/LandingPage/LandingPage';
 import LoginPage from './components/LoginPage/LoginPage';
 import RegisterPage from './components/RegisterPage/RegisterPage';
 import Dashboard from './components/Dashboard/Dashboard';
+import ViewTransactionsPage from './components/ViewTransactions/ViewTransactionsPage';
 
 import "./styles.css";
 
@@ -15,6 +16,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/view-transactions" element={<ViewTransactionsPage />} />
       </Routes>
     </Router>
   );

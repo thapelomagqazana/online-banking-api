@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Dashboard = () => {
     const [balance, setBalance] = useState(null);
@@ -56,8 +56,17 @@ const Dashboard = () => {
         {/* Quick Links Section */}
         <div className="quick-links">
           <h2>Quick Links</h2>
-          <button className="quick-link-button">Transfer Money</button>
-          <button className="quick-link-button">Pay Bills</button>
+        
+          <Link to="/view-transactions"><button className="quick-link-button">View Transactions</button></Link>
+            
+{/* //             <li> */}
+{/* //               <Link to="/transfer-funds">Transfer Funds</Link>
+//             </li>
+//             <li>
+//               <Link to="/pay-bills">Pay Bills</Link>
+//             </li> */}
+          {/* <button className="quick-link-button">Transfer Money</button>
+          <button className="quick-link-button">Pay Bills</button> */}
           {/* Add more quick links as needed */}
         </div>
   

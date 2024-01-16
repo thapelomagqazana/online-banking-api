@@ -39,7 +39,6 @@ const updateProfile = async (req, res) => {
     const { username, password } = req.body;
 
     const user = await User.findById(req.userId);
-    // console.log(user);
 
     if (!user)
     {

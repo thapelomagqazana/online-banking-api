@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-// import './AuthPage.css';
+import { Link, useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
-  // const navigate = useNavigate(); // Initialize useNavigate hook
+  const navigate = useNavigate(); // Initialize useNavigate hook
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -47,8 +46,17 @@ const LoginPage = () => {
 
       if (response.ok)
       {
+        const dataPromise = response.json();
         console.log("Login successful!");
-        // navigate("/login");
+        // Access the token when the promise is fulfilled
+        dataPromise.then((data) => {
+          const authToken = data.token;
+          console.log('Token:', authToken);
+          // save it in localStorage
+          localStorage.setItem("authToken", authToken);
+          
+        });
+        navigate("/dashboard");
       }
       else
       {

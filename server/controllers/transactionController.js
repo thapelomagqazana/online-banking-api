@@ -1,4 +1,5 @@
 const Transaction = require("../models/Transaction");
+const User = require("../models/User");
 
 
 /**
@@ -22,25 +23,58 @@ const viewTransactionHistory = async (req, res) => {
 };
 
 const transferFunds = async (req, res) => {
+    // Updating sender's and receiver's account balances
+    // Create transaction records
     try
     {
-        const { senderAccountId, receiverAccountId, amount } = req.body;
+        const { amount, recipientUsername } = req.body;
 
+        const recipient = await User.findOne({ recipientUsername });
+
+        if (!recipient)
+        {
+            return res.status(400).json({ message: "Recipient does not exist" });
+        }
+
+        const sender = await User.find( req.userId );
+
+        if ( typeof amount !== "number" )
+        {
+            return res.status(400).json({ message: "Number does not exist" });
+        }
+
+        if ( amount > sender.accountBalance )
+        {
+            return res.status(400).json({ message: "Sender's account balance is insufficient" });
+        }
+
+        // Update sender's account balance (subtracting the transferred amount)
+        sender.accountBalance -= amount;
+        await sender.save();
+
+        // Update recipient's account balance (adding the transferred amount)
+        recipient.accountBalance += amount;
+        await recipient.save();
+
+        // Create transaction records
         const senderTransaction = new Transaction({
-            accountId: senderAccountId,
-            amount: -amount,
-            description: "Funds Transfer to " + receiverAccountId,
-        });
-
-        const receiverTransaction = new Transaction({
-            accountId: receiverAccountId,
+            userId: req.userId,
+            type: "debit",
             amount,
-            description: "Funds Transfers from " + senderAccountId,
+            description: `Transferred funds to ${recipientUsername}`,
         });
+        await senderTransaction.save();
 
-        await Promise.all([senderTransaction.save(), receiverTransaction.save()]);
+        const recipientTransaction = new Transaction({
+            userId: recipient._id,
+            type: "credit",
+            amount,
+            description: `Received funds from ${sender.username}`,
+        });
+        await recipientTransaction.save();
 
         res.status(200).json({ message: "Funds transferred successfully" });
+
     }
     catch (error)
     {

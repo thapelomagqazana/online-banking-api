@@ -1,13 +1,12 @@
+require('dotenv').config();
+
 module.exports = {
-    // Database configuration
-    database: 'mongodb://localhost:27017/online-banking',
-    
-    // Secret key for JWT (JSON Web Tokens) authentication
-    jwtSecret: 'your_jwt_secret_key',
-  
-    // Other configuration settings
-    // ...
-  
-    // Port for the server to listen on
-    serverPort: process.env.PORT || 5000,
-  };
+  // Database configuration
+  database: process.env.DATABASE_URL,
+
+  // Secret key for JWT (JSON Web Tokens) authentication
+  jwtSecret: process.env.JWT_SECRET,
+
+  // Port for the server to listen on
+  serverPort: process.env.PORT || 5000,
+};

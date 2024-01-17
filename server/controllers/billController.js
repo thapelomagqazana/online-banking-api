@@ -32,7 +32,7 @@ const payBills = async (req, res) => {
     // Create a transaction record for the bill payment
     const billTransaction = new Transaction({
       userId: req.userId,
-      type: 'debit',
+      type: 'credit',
       amount: billAmount,
       description: billDescription,
     });

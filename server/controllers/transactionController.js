@@ -9,18 +9,41 @@ const User = require("../models/User");
  * @returns {object} JSON response with the user's transaction history or an error message.
  */
 const viewTransactionHistory = async (req, res) => {
-    try
-    {
-        const transactions = await Transaction.find({ userId: req.userId });
-
-        res.status(200).json({ transactions });
+    try {
+      let query = { userId: req.userId };
+  
+      // Search transactions by description
+      if (req.query.search) {
+        query.description = { $regex: new RegExp(req.query.search, 'i') };
+      }
+  
+      // Apply filters
+      if (req.query.filter) {
+        query.type = req.query.filter.toLowerCase();
+      }
+  
+      // Sort transactions
+      let sort = { date: 1 }; // Default sorting by date
+      if (req.query.sort) {
+        sort = {};
+        sort[req.query.sort] = 1;
+      }
+  
+      const page = parseInt(req.query.page) || 1;
+      const limit = parseInt(req.query.limit) || 10;
+      const skip = (page - 1) * limit;
+  
+      const transactions = await Transaction.find(query)
+        .sort(sort)
+        .skip(skip)
+        .limit(limit);
+  
+      res.status(200).json({ transactions });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal server error' });
     }
-    catch (error)
-    {
-        console.error(error);
-        res.status(500).json({ message: 'Internal server error' });
-    }
-};
+  };
 
 const transferFunds = async (req, res) => {
     // Updating sender's and receiver's account balances
@@ -55,12 +78,12 @@ const transferFunds = async (req, res) => {
 
         // Update sender's account balance (subtracting the transferred amount)
         sender.accountBalance = Number(sender.accountBalance) - Number(amount);
-        console.log(sender.accountBalance);
+        // console.log(sender.accountBalance);
         await sender.save();
 
         // Update recipient's account balance (adding the transferred amount)
         recipient.accountBalance = Number(recipient.accountBalance) + Number(amount);
-        console.log(recipient.accountBalance);
+        // console.log(recipient.accountBalance);
         await recipient.save();
 
         // Create transaction records

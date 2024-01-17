@@ -1,5 +1,6 @@
 const Transaction = require("../models/Transaction");
 const User = require("../models/User");
+const mongoose = require("mongoose");
 
 
 /**
@@ -113,4 +114,44 @@ const transferFunds = async (req, res) => {
     }
 };
 
-module.exports = { viewTransactionHistory, transferFunds };
+const viewRecentTransactions = async (req, res) => {
+    try {
+        const transactions = await Transaction.find({ userId: req.userId })
+            .sort({ timestamp: -1 }) // Sort in descending order of timestamp
+            .limit(3); // Limit to 3 most recent transactions
+
+        res.status(200).json({ transactions });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+// Fetch transaction distribution
+const viewTransactionDistribution = async (req, res) => {
+    try {
+      // Count the number of transactions for each type
+      const debitCount = await Transaction.countDocuments({ type: 'debit' });
+      const creditCount = await Transaction.countDocuments({ type: 'credit' });
+  
+      res.json({ debitCount, creditCount });
+    } catch (error) {
+      console.error('Error fetching transaction distribution:', error.message);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  };
+
+  // Fetch transaction amounts for visualization
+  const viewTransactionAmount = async (req, res) => {
+    try {
+      // Fetch transaction amounts
+      const transactions = await Transaction.find({}, 'amount');
+  
+      res.json({ transactionAmounts: transactions.map(transaction => transaction.amount) });
+    } catch (error) {
+      console.error('Error fetching transaction amounts:', error.message);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  };
+
+module.exports = { viewTransactionHistory, transferFunds, viewRecentTransactions, viewTransactionDistribution, viewTransactionAmount };

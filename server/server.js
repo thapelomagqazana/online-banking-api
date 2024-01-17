@@ -12,6 +12,7 @@ const cors = require("cors");
 const app = express();
 const PORT = config.serverPort;
 
+// Hi
 // Middleware
 app.use(express.json());
 app.use(morgan("dev"))

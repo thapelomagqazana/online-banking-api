@@ -1,21 +1,26 @@
 const Transaction = require('../models/Transaction');
 const User =   require("../models/User");
+const Account = require("../models/Account");
 
 const payBills = async (req, res) => {
   // Deduct the bill amount from the user's account balance
   // Create a transaction record
   try {
-    const { billAmount, billDescription } = req.body;
+    const { accountNumber, billAmount, billDescription } = req.body;
 
     // Deduct the bill amount from the user's account balance
-    const user = await User.findById(req.userId);
+    const senderAccount = await Account.findOne({ accountNumber, userId: req.userId });
 
-    // if ( typeof billAmount !== "number" )
-    // {
-    //     return res.status(400).json({ message: "Number does not exist" });
-    // }
 
-    if ( billAmount > user.accountBalance )
+    const amount = Number(billAmount);
+
+
+    if ( typeof amount !== "number" )
+    {
+        return res.status(400).json({ message: "Number does not exist" });
+    }
+
+    if ( amount > senderAccount.balance )
     {
         return res.status(400).json({ message: "Sender's account balance is insufficient" });
     }
@@ -26,12 +31,13 @@ const payBills = async (req, res) => {
     }
 
 
-    user.accountBalance -= billAmount;
-    await user.save();
+    senderAccount.balance = Number(senderAccount.balance) - billAmount;
+    await senderAccount.save();
 
     // Create a transaction record for the bill payment
     const billTransaction = new Transaction({
       userId: req.userId,
+      accountId: senderAccount._id,
       type: 'credit',
       amount: billAmount,
       description: billDescription,

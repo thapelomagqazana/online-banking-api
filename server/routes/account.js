@@ -5,8 +5,10 @@ const authMiddleware = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
-router.get("/profile", authMiddleware, accountController.viewProfile);
-router.put("/profile", authMiddleware, accountController.updateProfile);
+router.post("/create", authMiddleware, accountController.createAccount);
+router.get("/accounts", authMiddleware, accountController.getAccounts);
 router.get("/balance", authMiddleware, accountController.getAccountBalance);
+router.get("/active", authMiddleware, accountController.getActiveAccount);
+router.post("/set-active/:accountId", authMiddleware, accountController.setActiveAccount);
 
 module.exports = router;

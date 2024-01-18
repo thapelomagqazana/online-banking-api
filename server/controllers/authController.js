@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const Account = require("../models/Account");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { validationResult } = require("express-validator");
@@ -88,7 +89,7 @@ const login = async (req, res) => {
 
         // Check password
         const passwordMatch = await bcrypt.compare(password, user.password);
-        console.log(passwordMatch);
+        // console.log(passwordMatch);
         if (!passwordMatch)
         {
             return res.status(400).json({ message: "Invalid credentials" });
@@ -99,7 +100,16 @@ const login = async (req, res) => {
             {expiresIn: '1h',
         });
 
-        res.status(200).json({ token });
+        // Check if the user has an account
+        const userAccount = await Account.findOne({ userId: user._id });
+
+        if (userAccount) {
+        // User has an account, redirect to the dashboard
+        res.status(200).json({ token, redirect: '/dashboard' });
+        } else {
+        // User does not have an account, redirect to create account page
+        res.status(200).json({ token, redirect: '/create-account' });
+        }
     }
     catch (error)
     {

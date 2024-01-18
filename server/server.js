@@ -6,6 +6,7 @@ const authRoutes = require("./routes/auth");
 const accountRoutes = require("./routes/account");
 const transactionRoutes = require("./routes/transaction");
 const billRoutes = require('./routes/bill');
+const profileRoutes = require('./routes/profile');
 const config = require("./config/config");
 const cors = require("cors");
 
@@ -23,6 +24,7 @@ app.use("/auth", authRoutes);
 app.use("/account", accountRoutes);
 app.use("/transaction", transactionRoutes);
 app.use('/bill', billRoutes);
+app.use("/profile", profileRoutes);
 
 // Connect to MongoDB
 mongoose.connect(config.database, { useNewUrlParser: true, useUnifiedTopology: true });

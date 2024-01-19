@@ -13,7 +13,6 @@ const cors = require("cors");
 const app = express();
 const PORT = config.serverPort;
 
-// Hi
 // Middleware
 app.use(express.json());
 app.use(morgan("dev"))
@@ -25,6 +24,11 @@ app.use("/account", accountRoutes);
 app.use("/transaction", transactionRoutes);
 app.use('/bill', billRoutes);
 app.use("/profile", profileRoutes);
+
+// Welcome message for the root path
+app.get("/", (req, res) => {
+    res.send("Welcome to Siyabhanga online banking backend api!"); // You can customize this message
+});
 
 // Connect to MongoDB
 mongoose.connect(config.database, { useNewUrlParser: true, useUnifiedTopology: true });

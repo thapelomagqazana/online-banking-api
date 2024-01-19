@@ -58,9 +58,6 @@ const transferFunds = async (req, res) => {
     try {
       const { accountNumber, amount, recipientAccountNumber } = req.body;
 
-      // console.log(accountNumber);
-      // console.log(amount);
-      // console.log(recipientAccountNumber);
       const amount1 = Number(amount);
 
       // Find sender's account by account number
@@ -99,9 +96,7 @@ const transferFunds = async (req, res) => {
       }
 
       // Update sender's account balance (subtracting the transferred amount)
-      console.log(senderAccount.balance);
       senderAccount.balance = Number(senderAccount.balance) - amount1;
-      console.log(senderAccount.balance);
       await senderAccount.save();
 
       // Update recipient's account balance (adding the transferred amount)
@@ -112,7 +107,7 @@ const transferFunds = async (req, res) => {
       const senderTransaction = new Transaction({
           userId: req.userId,
           accountId: senderAccount._id,
-          type: "debit",
+          type: "credit",
           amount,
           description: `Transferred funds to ${recipientAccount.title}`,
       });
@@ -121,7 +116,7 @@ const transferFunds = async (req, res) => {
       const recipientTransaction = new Transaction({
           userId: recipientAccount.userId,
           accountId: recipientAccount._id,
-          type: "credit",
+          type: "debit",
           amount,
           description: `Received funds from ${senderUser.username}`,
       });
@@ -159,9 +154,16 @@ const viewRecentTransactions = async (req, res) => {
 // Fetch transaction distribution
 const viewTransactionDistribution = async (req, res) => {
     try {
-      // Count the number of transactions for each type
-      const debitCount = await Transaction.countDocuments({ type: 'debit' });
-      const creditCount = await Transaction.countDocuments({ type: 'credit' });
+      // Extract accountId from the request query parameters
+      const { accountId } = req.query;
+
+      if (!accountId) {
+        return res.status(400).json({ error: 'Missing accountId parameter' });
+      }
+      
+      // Count the number of transactions for each type for the specified account
+      const debitCount = await Transaction.countDocuments({ accountId, type: 'debit' });
+      const creditCount = await Transaction.countDocuments({ accountId, type: 'credit' });
   
       res.json({ debitCount, creditCount });
     } catch (error) {

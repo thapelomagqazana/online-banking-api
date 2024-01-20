@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const createAccount = async (req, res) => {
   try {
     const { accountNumber, title } = req.body;
-    const userId = req.userId; // Assuming the userId is available in the request (e.g., from authentication middleware)
+    const userId = req.userId; // The userId is available in the request (e.g., from authentication middleware)
 
     // Check if the user exists
     const userExists = await User.findById(userId);

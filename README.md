@@ -159,7 +159,6 @@ Siyabhanga Backend offers a range of APIs to power your online banking applicati
       "title": "Savings Account",
       "isActive": true
     },
-    // Additional accounts
   ]
 }
 ```
@@ -189,7 +188,6 @@ Siyabhanga Backend offers a range of APIs to power your online banking applicati
       "description": "Grocery shopping",
       "timestamp": "2023-12-01T12:30:00.000Z"
     },
-    // Additional transactions
   ]
 }
 ```
@@ -232,7 +230,6 @@ Siyabhanga Backend offers a range of APIs to power your online banking applicati
       "description": "Transferred from account ABC",
       "timestamp": "2023-12-01T12:30:00.000Z"
     },
-    // Additional transactions
   ]
 }
 ```

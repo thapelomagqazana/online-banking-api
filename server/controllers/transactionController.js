@@ -35,11 +35,13 @@ const viewTransactionHistory = async (req, res) => {
         sort = {};
         sort[req.query.sort] = 1;
       }
-  
+
+      // Paginate results
       const page = parseInt(req.query.page) || 1;
       const limit = parseInt(req.query.limit) || 10;
       const skip = (page - 1) * limit;
-  
+
+      // Fetch transactions based on query parameters
       const transactions = await Transaction.find(query)
         .sort(sort)
         .skip(skip)

@@ -12,7 +12,6 @@ const config = require("../config/config");
 const authMiddleware = (req, res, next) => {
     // Get the token from the request headers
     const token = req.header("Authorization");
-    // console.log(token);
 
     if (!token)
     {
@@ -31,10 +30,12 @@ const authMiddleware = (req, res, next) => {
     catch (error)
     {
         if (error.name === 'TokenExpiredError') {
+            // If the token is expired, return Forbidden status
             return res.status(403).json({ message: 'Token expired' });
         }
 
         console.error(error);
+        // If the token is invalid, return Unauthorized status
         return res.status(401).json({ message: 'Unauthorized' });
     }
 };

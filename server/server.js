@@ -27,7 +27,7 @@ app.use("/profile", profileRoutes);
 
 // Welcome message for the root path
 app.get("/", (req, res) => {
-    res.send("Welcome to Siyabhanga online banking api!"); // You can customize this message
+    res.send("Welcome to Siyabhanga online banking api!");
 });
 
 // Connect to MongoDB

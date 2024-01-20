@@ -17,12 +17,12 @@ Follow these steps to quickly set up and run Siyabhanga Backend on your local ma
 ### Installation
 1. Clone the repository:
 ```bash
-git clone https://github.com/thapelomagqazana/online-banking-app.git
+git clone https://github.com/thapelomagqazana/online-banking-api.git
 ```
 
 2. Navigate to the project directory:
 ```bash
-cd siyabhanga-backend
+cd online-banking-api
 ```
 3. Install dependencies:
 ```bash
